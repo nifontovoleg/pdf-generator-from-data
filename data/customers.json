@@ -1,0 +1,26 @@
+[
+  {
+    "customer_id": "CUST-001",
+    "name": "Иван Петров",
+    "email": "ivan.petrov@example.com",
+    "phone": "+7 (999) 123-45-67",
+    "address": "г. Москва, ул. Ленина, д. 10",
+    "registration_date": "2023-06-15"
+  },
+  {
+    "customer_id": "CUST-002",
+    "name": "Мария Сидорова",
+    "email": "maria.sidorova@example.com",
+    "phone": "+7 (999) 234-56-78",
+    "address": "г. Санкт-Петербург, пр. Невский, д. 25",
+    "registration_date": "2023-07-20"
+  },
+  {
+    "customer_id": "CUST-003",
+    "name": "Алексей Козлов",
+    "email": "alexey.kozlov@example.com",
+    "phone": "+7 (999) 345-67-89",
+    "address": "г. Екатеринбург, ул. Мира, д. 5",
+    "registration_date": "2023-08-10"
+  }
+]

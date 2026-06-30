@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Каталог товаров</title>
+    <style>
+        body {
+            font-family: 'DejaVu Sans', Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        .header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.2em;
+        }
+        .product-card {
+            background: white;
+            border: 2px solid #f5576c;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .product-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f5576c;
+        }
+        .product-id {
+            font-size: 0.9em;
+            color: #666;
+            font-weight: bold;
+        }
+        .product-name {
+            font-size: 1.5em;
+            color: #f5576c;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .product-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .detail-item {
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 5px;
+        }
+        .detail-label {
+            font-weight: bold;
+            color: #f5576c;
+            margin-bottom: 5px;
+        }
+        .price {
+            font-size: 1.8em;
+            color: #f5576c;
+            font-weight: bold;
+            text-align: right;
+        }
+        .stock {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>КАТАЛОГ ТОВАРОВ</h1>
+        <p style="font-size: 1.1em; margin: 10px 0;">Полный ассортимент продукции</p>
+    </div>
+
+    <div class="product-card">
+        <div class="product-header">
+            <div>
+                <div class="product-id">ID: {product_id}</div>
+                <div class="product-name">{name}</div>
+            </div>
+            <div class="price">{price} ₽</div>
+        </div>
+        <div class="product-details">
+            <div class="detail-item">
+                <div class="detail-label">Категория:</div>
+                <div>{category}</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">Наличие на складе:</div>
+                <div><span class="stock">{stock} шт.</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top: 40px; text-align: center; color: #666;">
+        <p>Актуальные цены и наличие товаров</p>
+    </div>
+</body>
+</html>

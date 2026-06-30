@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Счёт №{invoice_id}</title>
+    <style>
+        body {
+            font-family: 'DejaVu Sans', Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #4CAF50;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .invoice-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        .info-block {
+            flex: 1;
+        }
+        .info-block h3 {
+            margin-top: 0;
+            color: #4CAF50;
+        }
+        .details {
+            margin: 30px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .total {
+            text-align: right;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .status.Оплачен {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .status.В\ обработке {
+            background-color: #FF9800;
+            color: white;
+        }
+        .status.Ожидает\ оплаты {
+            background-color: #f44336;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>СЧЁТ НА ОПЛАТУ</h1>
+        <p>№ {invoice_id}</p>
+    </div>
+
+    <div class="invoice-info">
+        <div class="info-block">
+            <h3>Клиент:</h3>
+            <p><strong>{customer_name}</strong></p>
+        </div>
+        <div class="info-block">
+            <h3>Дата:</h3>
+            <p>{date}</p>
+            <h3>Статус:</h3>
+            <span class="status {status}">{status}</span>
+        </div>
+    </div>
+
+    <div class="details">
+        <h2>Детали счёта</h2>
+        <table>
+            <tr>
+                <th>Описание</th>
+                <th>Сумма</th>
+            </tr>
+            <tr>
+                <td>Общая сумма счёта</td>
+                <td>{total} ₽</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="total">
+        <p>Итого к оплате: <strong>{total} ₽</strong></p>
+    </div>
+
+    <div style="margin-top: 50px; text-align: center; color: #666; font-size: 0.9em;">
+        <p>Спасибо за ваш заказ!</p>
+    </div>
+</body>
+</html>

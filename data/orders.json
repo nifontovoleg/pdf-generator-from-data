@@ -1,0 +1,37 @@
+[
+  {
+    "order_id": "ORD-001",
+    "invoice_id": "INV-001",
+    "customer_id": "CUST-001",
+    "order_date": "2024-01-15",
+    "items": [
+      {"product": "Ноутбук Dell", "quantity": 1, "price": 45000},
+      {"product": "Мышь Logitech", "quantity": 2, "price": 1500}
+    ],
+    "total": 48000,
+    "status": "Выполнен"
+  },
+  {
+    "order_id": "ORD-002",
+    "invoice_id": "INV-002",
+    "customer_id": "CUST-002",
+    "order_date": "2024-01-16",
+    "items": [
+      {"product": "Монитор Samsung", "quantity": 2, "price": 25000},
+      {"product": "Клавиатура механическая", "quantity": 1, "price": 3500}
+    ],
+    "total": 53500,
+    "status": "В обработке"
+  },
+  {
+    "order_id": "ORD-003",
+    "invoice_id": "INV-003",
+    "customer_id": "CUST-003",
+    "order_date": "2024-01-17",
+    "items": [
+      {"product": "Наушники Sony", "quantity": 2, "price": 8000}
+    ],
+    "total": 16000,
+    "status": "Выполнен"
+  }
+]
