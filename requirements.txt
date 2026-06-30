@@ -1,2 +1,4 @@
 weasyprint>=60.0
 pandas>=2.0.0
+gspread
+google-auth

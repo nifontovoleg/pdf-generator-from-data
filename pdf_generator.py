@@ -13,6 +13,13 @@ try:
 except ImportError:
     pd = None
 
+try:
+    import gspread  # pyright: ignore[reportMissingImports]
+    from google.oauth2.service_account import Credentials  # pyright: ignore[reportMissingImports]
+except ImportError:
+    gspread = None
+    Credentials = None
+
 from weasyprint import HTML  # pyright: ignore[reportMissingImports]
 
 
@@ -23,6 +30,7 @@ DATA_DIR = BASE_DIR / "data"
 TEMPLATES_DIR = BASE_DIR / "templates"
 OUTPUT_DIR = BASE_DIR / "output"
 FONTS_DIR = BASE_DIR / "fonts"  # необязательно; можно положить сюда DejaVuSans.ttf
+DEFAULT_GOOGLE_CREDENTIALS = BASE_DIR / "credentials.json"
 
 
 # -------- Вспомогательные функции --------
@@ -91,6 +99,61 @@ def load_data_file(path: Path):
     else:
         raise ValueError("Неизвестный формат файла данных.")
     return records
+
+
+def resolve_credentials_path(value: str) -> Path:
+    if not value:
+        return DEFAULT_GOOGLE_CREDENTIALS
+
+    path = Path(value).expanduser()
+    if not path.is_absolute():
+        path = BASE_DIR / path
+    return path
+
+
+def load_google_sheet(sheet_url: str, worksheet_name: str, credentials_path: Path):
+    if gspread is None or Credentials is None:
+        raise ImportError(
+            "Для Google Sheets установите зависимости: "
+            "pip install gspread google-auth"
+        )
+
+    if not credentials_path.exists():
+        raise FileNotFoundError(
+            f"Не найден файл ключа: {credentials_path}. "
+            "Скачайте JSON-ключ service account и положите его в проект."
+        )
+
+    scopes = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
+    creds = Credentials.from_service_account_file(str(credentials_path), scopes=scopes)
+    client = gspread.authorize(creds)
+
+    sheet = client.open_by_url(sheet_url)
+    worksheet = sheet.worksheet(worksheet_name) if worksheet_name else sheet.sheet1
+    return worksheet.get_all_records()
+
+
+def load_google_sheet_interactive():
+    print("\nЗагрузка данных из Google Sheets")
+    sheet_url = input("Вставьте ссылку на Google таблицу: ").strip()
+    if not sheet_url:
+        raise ValueError("Ссылка на Google таблицу не указана.")
+
+    worksheet_name = input("Введите имя листа (Enter = первый лист): ").strip()
+    credentials_value = input(
+        "Путь к JSON-ключу service account "
+        f"(Enter = {DEFAULT_GOOGLE_CREDENTIALS.name}): "
+    ).strip()
+    credentials_path = resolve_credentials_path(credentials_value)
+
+    print(f"\nЧтение данных из Google Sheets: {sheet_url}")
+    if worksheet_name:
+        print(f"Лист: {worksheet_name}")
+    else:
+        print("Лист: первый лист таблицы")
+    print(f"JSON-ключ: {credentials_path}")
+
+    return load_google_sheet(sheet_url, worksheet_name, credentials_path)
 
 
 def detect_invoice_id_key(record: dict):
@@ -265,23 +328,34 @@ def main():
     else:
         print("  (нет шаблонов в каталоге 'templates')")
 
-    if not data_files or not templates:
-        print("\nДля работы нужны хотя бы один файл данных и один HTML-шаблон.")
+    if not templates:
+        print("\nДля работы нужен хотя бы один HTML-шаблон.")
         return
-
-    data_file = choose_from_list("Выберите файл данных", [f.name for f in data_files])
-    if data_file is None:
-        return
-    data_path = DATA_DIR / data_file
 
     template_file = choose_from_list("Выберите HTML-шаблон", [t.name for t in templates])
     if template_file is None:
         return
     template_path = TEMPLATES_DIR / template_file
 
-    print(f"\nЧтение данных из: {data_path}")
+    data_sources = []
+    if data_files:
+        data_sources.append("Локальный CSV/JSON")
+    data_sources.append("Google Sheets")
+
+    data_source = choose_from_list("Выберите источник данных", data_sources)
+    if data_source is None:
+        return
+
     try:
-        records = load_data_file(data_path)
+        if data_source == "Локальный CSV/JSON":
+            data_file = choose_from_list("Выберите файл данных", [f.name for f in data_files])
+            if data_file is None:
+                return
+            data_path = DATA_DIR / data_file
+            print(f"\nЧтение данных из: {data_path}")
+            records = load_data_file(data_path)
+        else:
+            records = load_google_sheet_interactive()
     except Exception as e:
         print(f"Ошибка чтения данных: {e}")
         return
